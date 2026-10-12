@@ -92,7 +92,25 @@ textarea{font:inherit;font-size:15px;width:100%;border:1px solid var(--line);bor
 .send{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#15121a;color:#fff;border-radius:999px;padding:10px 12px 10px 20px;display:flex;gap:16px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:9;font-size:15px;white-space:nowrap}
 .send button{font:inherit;border:0;border-radius:999px;padding:8px 16px;background:#25D366;color:#fff;cursor:pointer}
 footer{padding:80px 0 120px;color:var(--mut);font-size:14px}
-@media (max-width:860px){.li{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr);gap:20px 12px}.wrap{padding:0 16px}.send{font-size:13px;gap:10px}}
+.appr{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:14px;max-width:520px}
+.al{display:block;font-size:16px;margin-bottom:8px}
+label.chk{display:block}label.chk small{display:block;font-size:13px;opacity:.85;margin-top:2px}
+@media (max-width:860px){.li{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr);gap:20px 12px}.wrap{padding:0 16px}}
+@media (max-width:600px){
+ body{padding-bottom:72px}
+ header.hero{padding:20px 0 40px}.hero h1{margin-top:32px}.hero p{font-size:17px}
+ .stats{gap:22px}.stats b{font-size:30px}
+ section{padding:40px 0 4px}h2{font-size:28px}.lead{font-size:16px}
+ .bar{gap:8px}.seg button{padding:7px 14px;font-size:15px}label.chk{font-size:14px;align-items:flex-start}
+ .phone{border-width:4px;border-radius:18px}
+ .meta{flex-direction:column;gap:0}.meta b{font-size:14px}.meta span{font-size:12px}
+ .act{gap:6px}.act button{font-size:13px;padding:7px 4px}
+ .play span{width:48px;height:48px}
+ .send{left:0;right:0;bottom:0;transform:none;border-radius:16px 16px 0 0;padding:10px 12px;gap:8px;justify-content:space-between;font-size:13px}
+ .send input{width:84px;padding:7px 10px}.send button{padding:8px 12px}
+ .iggrid{max-width:100%}.appr{max-width:100%}
+ footer{padding:48px 0 100px}
+}
 </style>
 </head>
 <body>
@@ -114,7 +132,7 @@ footer{padding:80px 0 120px;color:var(--mut);font-size:14px}
   <h2>وش تغيّر في المقاطع</h2>
   <p class="lead">طبّقنا على كل مقطع ما يخص الفيديو في الدليل البصري.</p>
   <div class="done">
-   <div><b>العناوين بالبنفسجي</b><p>العناوين الذهبية خارج ألوان الهوية، فغطيناها بشريط بنفسجي وأعدنا كتابتها بالخط السعودي.</p></div>
+   <div><b>المقاطع بدون نصوص</b><p>شلنا العناوين من داخل المقاطع، وصار العنوان كابشن البوست. تشوفه تحت كل مقطع بالشكل اللي بينزل فيه.</p></div>
    <div><b>التدرّج البنفسجي السفلي</b><p>التوقيع البصري بالمواصفة: 38٪ من ارتفاع اللوحة وشفافية 92٪ عند الحافة.</p></div>
    <div><b>خاتمة ثابتة</b><p>ثانيتان في آخر كل مقطع، فيها الشعار والسطر التعريفي وموضع للرعاة.</p></div>
    <div><b>الصوت والألوان</b><p>نظّفنا الضجيج وسوّينا مستوى الصوت عند ‎-14 LUFS، وحوّلنا ألوان HDR من الآيفون إلى ألوان عادية.</p></div>
@@ -129,7 +147,7 @@ footer{padding:80px 0 120px;color:var(--mut);font-size:14px}
   <p class="lead">اضغط على أي مقطع لتشغيله. بدّل بين المنصتين لتشوف شكله على كل واحدة، وفعّل المنطقة الآمنة لتشوف حدود أزرار التطبيق. الاعتماد والملاحظات تنحفظ وتظهر عند كل من يفتح الرابط.</p>
   <div class="bar">
    <div class="seg" id="plat"><button class="on" data-p="tt">تيك توك</button><button data-p="ig">إنستقرام</button></div>
-   <label class="chk"><input type="checkbox" id="safeT"> إظهار المنطقة الآمنة</label>
+   <label class="chk"><input type="checkbox" id="safeT"> إظهار المنطقة الآمنة <small>(الإطار الأصفر: الجزء اللي ما تغطيه أزرار التطبيق ونصوصه، وأي شي مهم لازم يكون داخله)</small></label>
   </div>
   <div class="grid" id="grid"></div>
  </section>
@@ -146,14 +164,19 @@ footer{padding:80px 0 120px;color:var(--mut);font-size:14px}
    </div>
    <div class="post">
     <div class="hd"><i></i><div><b>أهداف</b><small>شركة تسويق وإعلام · الآن</small></div></div>
-    <div class="tx">من معرض الصقور: 26 مقطعاً ميدانياً صوّرها فريق أهداف بين أجنحة المعرض، مع الزوار والصقّارين والضيوف.
-وصلت المقاطع إلى [عدد المشاهدات] مشاهدة على تيك توك وإنستقرام خلال [عدد الأيام] أيام.
-هنا دقيقة من أبرز اللحظات.
+    <div class="tx">تغطيتنا لمعرض الصقور
 
-#معرض_الصقور #أهداف</div>
+26 لقاءً ميدانياً بين أجنحة المعرض، مع الصقّارين والزوار وضيوف قدموا من داخل المملكة وخارجها. سألناهم عن أسعار الطيور وأسمائها، والصفة التي يبحثون عنها في الصقر.
+
+حققت المقاطع [عدد المشاهدات] مشاهدة على تيك توك وإنستقرام خلال [عدد الأيام] أيام.
+
+في هذا المقطع دقيقة من أبرز اللحظات.
+
+#معرض_الصقور #الصقارة #أهداف</div>
     <div class="vid"><video src="v/highlight.mp4" poster="c/highlight.jpg" controls playsinline preload="none"></video></div>
     <div class="ft"><span>أعجبني</span><span>تعليق</span><span>مشاركة</span><span>إرسال</span></div>
    </div>
+   <div class="appr card" data-id="highlight" data-label="منشور لينكدإن (المقطع المجمّع والنص)"></div>
   </div>
  </section>
 
@@ -161,6 +184,7 @@ footer{padding:80px 0 120px;color:var(--mut);font-size:14px}
   <h2>شبكة إنستقرام</h2>
   <p class="lead">شكل الحساب بعد النشر. الشبكة تقص الغلاف إلى 3:4، والعنوان باقٍ داخل الإطار.</p>
   <div class="iggrid" id="igg"><div class="ighd"><i></i><div><b>ahdaf</b><br><small>أهداف · تسويق وإعلام</small></div></div></div>
+  <div class="appr card" data-id="iggrid" data-label="شبكة إنستقرام (الأغلفة)"></div>
  </section>
 </main>
 <footer class="wrap">أهداف · نربط الإبداع بالهدف · ahdaf.co</footer>
@@ -224,10 +248,8 @@ function render(){
   el.className='card'+(s.v==='fix'?' needfix':'');
   el.innerHTML=`<div class="phone"><img class="poster" src="c/${c.i}.jpg" loading="lazy" alt="">${ui(c)}${safeBox()}
    <button class="play" aria-label="تشغيل"><span><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></button></div>
-   <div class="meta"><b>${String(c.i).padStart(2,'0')}. ${c.t.replace(/\n/g,' ')}${c.added?'<span class="tag">عنوان مقترح</span>':''}</b><span>${fmt(c.d)}</span></div>
-   <div class="act"><button class="ok ${s.v==='ok'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button></div>
-   <div class="who">${s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):''}</div>
-   <textarea placeholder="وش التعديل المطلوب؟">${esc(s.n||'')}</textarea>`;
+   <div class="meta"><b>${String(c.i).padStart(2,'0')}. ${c.t.replace(/\n/g,' ')}${c.added?'<span class="tag">كابشن مقترح</span>':''}</b><span>${fmt(c.d)}</span></div>
+   ${apprHTML(c.i,s)}`;
   const ph=el.querySelector('.phone');
   el.querySelector('.play').onclick=()=>{
    document.querySelectorAll('.phone video').forEach(v=>{v.pause()});
@@ -235,13 +257,28 @@ function render(){
    if(!v){v=document.createElement('video');v.src=`v/${c.i}.mp4`;v.playsInline=true;v.controls=true;ph.insertBefore(v,ph.querySelector('.ui'))}
    ph.classList.add('playing');v.play();
   };
-  el.querySelector('.ok').onclick=()=>{st[c.i]={...s,v:s.v==='ok'?'':'ok'};save(c.i);render()};
-  el.querySelector('.fix').onclick=()=>{st[c.i]={...s,v:s.v==='fix'?'':'fix'};save(c.i);render()};
-  el.querySelector('textarea').oninput=e=>{st[c.i]={...(st[c.i]||{}),v:'fix',n:e.target.value};save(c.i)};
+  bind(el,c.i,s,render);
   g.appendChild(el);
  });
- count();
+ renderExtra(); count();
 }
+function apprHTML(id,s){return `<div class="act"><button class="ok ${s.v==='ok'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button></div>
+   <div class="who">${s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):''}</div>
+   <textarea placeholder="وش التعديل المطلوب؟">${esc(s.n||'')}</textarea>`}
+function bind(el,id,s,re){
+ el.querySelector('.ok').onclick=()=>{st[id]={...s,v:s.v==='ok'?'':'ok'};save(id);re()};
+ el.querySelector('.fix').onclick=()=>{st[id]={...s,v:s.v==='fix'?'':'fix'};save(id);re()};
+ el.querySelector('textarea').oninput=e=>{st[id]={...(st[id]||{}),v:'fix',n:e.target.value};save(id)};
+}
+function renderExtra(){
+ document.querySelectorAll('.appr').forEach(el=>{
+  const id=el.dataset.id, s=st[id]||{};
+  el.classList.toggle('needfix',s.v==='fix');
+  el.innerHTML=`<b class="al">اعتماد ${el.dataset.label}</b>`+apprHTML(id,s);
+  bind(el,id,s,()=>{renderExtra();count()});
+ });
+}
+const EXTRA={highlight:'منشور لينكدإن',iggrid:'شبكة إنستقرام'};
 function count(){let o=0,f=0;for(const k in st){if(st[k].v==='ok')o++;if(st[k].v==='fix')f++}
  document.getElementById('cnt').textContent=`${o} معتمد · ${f} تعديل`}
 document.querySelectorAll('#plat button').forEach(b=>b.onclick=()=>{
@@ -251,7 +288,9 @@ document.getElementById('wa').onclick=()=>{
  let ok=[],fx=[];
  clips.forEach(c=>{const s=st[c.i];if(!s)return;const t=c.t.replace(/\n/g,' ');
   if(s.v==='ok')ok.push(c.i);if(s.v==='fix')fx.push(`${c.i}. ${t}: ${s.n||'بدون تفاصيل'}`)});
- const rest=clips.length-ok.length-fx.length;
+ for(const id in EXTRA){const s=st[id];if(!s)continue;
+  if(s.v==='ok')ok.push(EXTRA[id]);if(s.v==='fix')fx.push(`${EXTRA[id]}: ${s.n||'بدون تفاصيل'}`)}
+ const rest=clips.length+2-ok.length-fx.length;
  let m=`رد التعميد · مقاطع معرض الصقور\n\nمعتمد (${ok.length}): ${ok.join('، ')||'لا يوجد'}\n`;
  if(fx.length)m+=`\nيحتاج تعديل (${fx.length}):\n${fx.join('\n')}\n`;
  if(rest)m+=`\nبدون رد: ${rest}\n`;
