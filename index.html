@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مقاطع معرض الصقور · أهداف</title>
+<meta name="description" content="مقاطع تغطية معرض الصقور بهوية أهداف، جاهزة للتعميد">
+<style>
+@font-face{font-family:SS;src:url(a/SaudiSerif-Regular.ttf);font-weight:400}
+@font-face{font-family:SS;src:url(a/SaudiSerif-Medium.ttf);font-weight:500}
+@font-face{font-family:SS;src:url(a/SaudiSerif-Bold.ttf);font-weight:700}
+:root{--p:#4C0192;--p2:#530396;--ink:#111;--mut:#6b6477;--line:#e6e0ee;--bg:#fbfafd;--card:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:SS,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+header.hero{background:linear-gradient(120deg,#2C0055,#6A16B8);color:#fff;padding:28px 0 64px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top img{height:38px}
+.top span{font-size:15px;opacity:.8}
+.hero h1{font-size:clamp(40px,7vw,88px);line-height:1.1;margin-top:56px;font-weight:700}
+.hero p{font-size:20px;opacity:.88;max-width:640px;margin-top:14px}
+.stats{display:flex;gap:40px;margin-top:36px;flex-wrap:wrap}
+.stats b{display:block;font-size:40px;line-height:1}
+.stats small{opacity:.75;font-size:15px}
+section{padding:64px 0 8px}
+h2{font-size:36px;font-weight:700;line-height:1.2}
+.lead{color:var(--mut);font-size:18px;margin-top:8px;max-width:760px}
+.done{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:24px}
+.done div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.done b{display:block;font-size:18px;margin-bottom:4px}
+.done p{color:var(--mut);font-size:15px}
+.done .warn{border-color:#e9c46a;background:#fffaf0}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:28px;position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px}
+.seg button{font:inherit;font-size:16px;border:0;background:none;padding:8px 18px;border-radius:999px;cursor:pointer;color:var(--mut)}
+.seg button.on{background:var(--p);color:#fff}
+label.chk{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--mut);cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:28px 22px;margin-top:12px}
+.card{display:flex;flex-direction:column;gap:10px}
+.phone{position:relative;aspect-ratio:9/16;border-radius:26px;overflow:hidden;background:#000;border:6px solid #15121a;box-shadow:0 12px 30px rgba(44,0,85,.18);container-type:inline-size}
+.phone video,.phone img.poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ui{position:absolute;inset:0;pointer-events:none;color:#fff;font-family:system-ui,-apple-system,sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.ui .tabs{position:absolute;top:4.5%;width:100%;text-align:center;font-size:5.4cqw;font-weight:600;opacity:.95}
+.ui .tabs i{font-style:normal;opacity:.6;margin:0 3%}
+.ui .rail{position:absolute;right:2.6%;bottom:16%;display:flex;flex-direction:column;align-items:center;gap:5.5cqw;font-size:3.6cqw}
+.ui .rail svg{width:10cqw;height:10cqw;display:block;margin:0 auto 1cqw;fill:#fff}
+.ui .av{width:11cqw;height:11cqw;border-radius:50%;background:var(--p) url(a/logo-white.png) center/70% no-repeat;border:1.5px solid #fff}
+.ui .cap{position:absolute;left:4%;right:20%;bottom:4.5%;direction:rtl;text-align:right;font-size:4.2cqw;line-height:1.35}
+.ui .cap b{display:block;font-size:4.6cqw;margin-bottom:1cqw}
+.ui .cap small{display:block;opacity:.85;margin-top:1.5cqw;font-size:3.6cqw}
+.ui.ig .tabs{text-align:right;padding-right:5%;font-size:6.4cqw;font-weight:700}
+.ui.ig .rail{bottom:9%}
+.ui.ig .cap{bottom:3.5%}
+.safe{position:absolute;border:1.5px dashed #ffe066;pointer-events:none;display:none}
+.showsafe .safe{display:block}
+.play{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer;background:none;border:0}
+.play span{width:64px;height:64px;border-radius:50%;background:rgba(76,1,146,.85);display:grid;place-items:center}
+.play svg{width:26px;fill:#fff;margin-left:-4px}
+.playing .play{display:none}
+.meta{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.meta b{font-size:17px;line-height:1.35}
+.meta span{color:var(--mut);font-size:14px;white-space:nowrap;font-family:system-ui}
+.tag{font-size:12px;background:#f1e9fb;color:var(--p);border-radius:6px;padding:1px 7px;margin-inline-start:6px;white-space:nowrap}
+.act{display:flex;gap:8px}
+.act button{flex:1;font:inherit;font-size:15px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px;cursor:pointer}
+.act button.ok.on{background:#1f7a4d;border-color:#1f7a4d;color:#fff}
+.act button.fix.on{background:#b5651d;border-color:#b5651d;color:#fff}
+textarea{font:inherit;font-size:15px;width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;resize:vertical;min-height:44px;display:none}
+.card.needfix textarea{display:block}
+.dl{font-size:14px;color:var(--p);text-decoration:none}
+.li{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:40px;margin-top:28px;align-items:start}
+.why{display:flex;flex-direction:column;gap:12px}
+.opt{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px}
+.opt.pick{border:2px solid var(--p)}
+.opt b{font-size:18px}
+.opt p{color:var(--mut);font-size:15px}
+.post{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-family:system-ui,-apple-system,sans-serif}
+.post .hd{display:flex;gap:10px;padding:12px 14px;align-items:center}
+.post .hd i{width:46px;height:46px;background:var(--p) url(a/logo-white.png) center/70% no-repeat;flex:none}
+.post .hd b{font-size:15px;display:block}
+.post .hd small{color:#666;font-size:12px}
+.post .tx{padding:0 14px 12px;font-size:14px;line-height:1.6;white-space:pre-line}
+.post .vid{position:relative;aspect-ratio:9/16;background:#000;max-height:620px;margin:0 auto}
+.post .vid video{width:100%;height:100%;object-fit:contain;display:block}
+.post .ft{display:flex;justify-content:space-around;border-top:1px solid #eee;padding:10px;font-size:13px;color:#555}
+.iggrid{direction:ltr;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;max-width:520px;margin-top:24px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 0 0;overflow:hidden}
+.ighd{direction:rtl;grid-column:1/-1;display:flex;gap:14px;align-items:center;padding:0 16px 14px;font-family:system-ui}
+.ighd i{width:64px;height:64px;border-radius:50%;background:var(--p) url(a/logo-white.png) center/62% no-repeat}
+.iggrid img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.send{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#15121a;color:#fff;border-radius:999px;padding:10px 12px 10px 20px;display:flex;gap:16px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:9;font-size:15px;white-space:nowrap}
+.send button{font:inherit;border:0;border-radius:999px;padding:8px 16px;background:#25D366;color:#fff;cursor:pointer}
+footer{padding:80px 0 120px;color:var(--mut);font-size:14px}
+@media (max-width:860px){.li{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr);gap:20px 12px}.wrap{padding:0 16px}.send{font-size:13px;gap:10px}}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="wrap">
+  <div class="top"><img src="a/logo-white.png" alt="أهداف"><span>للتعميد · أكتوبر 2026</span></div>
+  <h1>معرض الصقور</h1>
+  <p>مقاطع التغطية الميدانية بعد تطبيق الدليل البصري لأهداف، معروضة كما ستظهر على المنصات.</p>
+  <div class="stats">
+   <div><b id="nClips">26</b><small>مقطع لتيك توك وإنستقرام</small></div>
+   <div><b>1</b><small>مقطع مجمّع للينكدإن</small></div>
+   <div><b id="nMin">–</b><small>دقيقة محتوى</small></div>
+  </div>
+ </div>
+</header>
+
+<main class="wrap">
+ <section>
+  <h2>وش تغيّر في المقاطع</h2>
+  <p class="lead">طبّقنا على كل مقطع ما يخص الفيديو في الدليل البصري.</p>
+  <div class="done">
+   <div><b>العناوين بالبنفسجي</b><p>العناوين الذهبية خارج ألوان الهوية، فغطيناها بشريط بنفسجي وأعدنا كتابتها بالخط السعودي.</p></div>
+   <div><b>التدرّج البنفسجي السفلي</b><p>التوقيع البصري بالمواصفة: 38٪ من ارتفاع اللوحة وشفافية 92٪ عند الحافة.</p></div>
+   <div><b>خاتمة ثابتة</b><p>ثانيتان في آخر كل مقطع، فيها الشعار والسطر التعريفي وموضع للرعاة.</p></div>
+   <div><b>الصوت والألوان</b><p>نظّفنا الضجيج وسوّينا مستوى الصوت عند ‎-14 LUFS، وحوّلنا ألوان HDR من الآيفون إلى ألوان عادية.</p></div>
+   <div><b>التصدير والتسمية</b><p>H.264 بدقة 1080×1920 و30 إطاراً و16 ميجابت، والتسمية بصيغة الدليل.</p></div>
+   <div><b>أغلفة مصممة</b><p>لكل مقطع غلاف عليه عنوانه داخل المنطقة الآمنة، ويتحمّل قص شبكة إنستقرام 3:4.</p></div>
+   <div class="warn"><b>باقي: الترجمة المكتوبة</b><p>الدليل يلزم بها، لكن التفريغ الآلي للهجة فيه أخطاء. جاهزة كمسودة وتنحرق في المقاطع بعد المراجعة.</p></div>
+  </div>
+ </section>
+
+ <section>
+  <h2>المقاطع</h2>
+  <p class="lead">اضغط على أي مقطع لتشغيله. بدّل بين المنصتين لتشوف شكله على كل واحدة، وفعّل المنطقة الآمنة لتشوف حدود أزرار التطبيق.</p>
+  <div class="bar">
+   <div class="seg" id="plat"><button class="on" data-p="tt">تيك توك</button><button data-p="ig">إنستقرام</button></div>
+   <label class="chk"><input type="checkbox" id="safeT"> إظهار المنطقة الآمنة</label>
+  </div>
+  <div class="grid" id="grid"></div>
+ </section>
+
+ <section>
+  <h2>لينكدإن</h2>
+  <p class="lead">لينكدإن منصة عملاء وشركاء، والدليل يطلب أن يحمل كل منشور فيها رقماً أو نتيجة. عشان كذا ما ننزّل المقاطع كلها هناك.</p>
+  <div class="li">
+   <div class="why">
+    <div class="opt"><b>كل المقاطع</b><p>لا. ٢٦ منشوراً طريفاً متتالياً تزحم صفحة الشركة وتضيع نبرتها الرسمية.</p></div>
+    <div class="opt"><b>مقطع واحد مختار</b><p>مقطع واحد ما يعكس حجم التغطية، ويظهر كمحتوى ترفيهي بدون سياق.</p></div>
+    <div class="opt pick"><b>مقطع مجمّع من الهايلايت ✓</b><p>دقيقة واحدة من ست لحظات: انطباع الزوار عن المعرض، والأسعار، وصقّار من باكستان، والجدة حصيصه. يبيّن قدرة أهداف على التغطية الميدانية، ومعه نص منشور فيه أرقام التغطية.</p></div>
+    <div class="opt"><b>توقيت النشر</b><p>بعد نزول المقاطع على تيك توك وإنستقرام بأسبوع، عشان نضيف للمنشور أرقام المشاهدات الفعلية.</p></div>
+   </div>
+   <div class="post">
+    <div class="hd"><i></i><div><b>أهداف</b><small>شركة تسويق وإعلام · الآن</small></div></div>
+    <div class="tx">من معرض الصقور: 26 مقطعاً ميدانياً صوّرها فريق أهداف بين أجنحة المعرض، مع الزوار والصقّارين والضيوف.
+وصلت المقاطع إلى [عدد المشاهدات] مشاهدة على تيك توك وإنستقرام خلال [عدد الأيام] أيام.
+هنا دقيقة من أبرز اللحظات.
+
+#معرض_الصقور #أهداف</div>
+    <div class="vid"><video src="v/highlight.mp4" poster="c/highlight.jpg" controls playsinline preload="none"></video></div>
+    <div class="ft"><span>أعجبني</span><span>تعليق</span><span>مشاركة</span><span>إرسال</span></div>
+   </div>
+  </div>
+ </section>
+
+ <section>
+  <h2>شبكة إنستقرام</h2>
+  <p class="lead">شكل الحساب بعد النشر. الشبكة تقص الغلاف إلى 3:4، والعنوان باقٍ داخل الإطار.</p>
+  <div class="iggrid" id="igg"><div class="ighd"><i></i><div><b>ahdaf</b><br><small>أهداف · تسويق وإعلام</small></div></div></div>
+ </section>
+</main>
+<footer class="wrap">أهداف · نربط الإبداع بالهدف · ahdaf.co</footer>
+
+<div class="send"><span id="cnt">0 معتمد · 0 تعديل</span><button id="wa">إرسال الرد عبر واتساب</button></div>
+
+<script>
+const ICON={
+heart:'<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.2 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.1 1.8-1.9 3.3-3.1 5.4-3.1 3.6 0 5.8 3.7 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg>',
+com:'<svg viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.6 1.4 4.9 3.6 6.5L5 22l4.3-2.3c.9.2 1.8.3 2.7.3 5.5 0 10-3.8 10-8.5S17.5 3 12 3z"/></svg>',
+save:'<svg viewBox="0 0 24 24"><path d="M6 2h12a1 1 0 0 1 1 1v19l-7-4.5L5 22V3a1 1 0 0 1 1-1z"/></svg>',
+share:'<svg viewBox="0 0 24 24"><path d="M14 4l8 8-8 8v-5c-6 0-9.5 1.8-12 6 1-6 4-11.5 12-12.5V4z"/></svg>',
+send:'<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>'};
+const SAFE={tt:{t:240,b:660,s:120},ig:{t:270,b:670,s:65}};
+let plat='tt', clips=[], st={};
+try{st=JSON.parse(localStorage.getItem('ahdaf-falcon')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('ahdaf-falcon',JSON.stringify(st))}catch(e){};count()};
+const fmt=s=>Math.floor(s/60)+':'+String(Math.round(s%60)).padStart(2,'0');
+function ui(c){
+ const t=c.t.replace(/\n/g,' ');
+ if(plat==='tt') return `<div class="ui"><div class="tabs"><i>متابَعون</i> لك</div>
+ <div class="rail"><div class="av"></div><div>${ICON.heart}12.4K</div><div>${ICON.com}318</div><div>${ICON.save}1.1K</div><div>${ICON.share}904</div></div>
+ <div class="cap"><b>@ahdaf</b>${t}<small>#معرض_الصقور #أهداف</small></div></div>`;
+ return `<div class="ui ig"><div class="tabs">Reels</div>
+ <div class="rail"><div>${ICON.heart}12.4K</div><div>${ICON.com}318</div><div>${ICON.send}904</div><div>${ICON.save}</div></div>
+ <div class="cap"><b>ahdaf · متابعة</b>${t}<small>♫ الصوت الأصلي · ahdaf</small></div></div>`;
+}
+function safeBox(){const s=SAFE[plat];return `<div class="safe" style="top:${s.t/19.2}%;bottom:${s.b/19.2}%;left:${s.s/10.8}%;right:${s.s/10.8}%"></div>`}
+function render(){
+ const g=document.getElementById('grid'); g.innerHTML='';
+ clips.forEach(c=>{
+  const s=st[c.i]||{}; const el=document.createElement('div');
+  el.className='card'+(s.v==='fix'?' needfix':'');
+  el.innerHTML=`<div class="phone"><img class="poster" src="c/${c.i}.jpg" loading="lazy" alt="">${ui(c)}${safeBox()}
+   <button class="play" aria-label="تشغيل"><span><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></button></div>
+   <div class="meta"><b>${String(c.i).padStart(2,'0')}. ${c.t.replace(/\n/g,' ')}${c.added?'<span class="tag">عنوان مقترح</span>':''}</b><span>${fmt(c.d)}</span></div>
+   <div class="act"><button class="ok ${s.v==='ok'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button></div>
+   <textarea placeholder="وش التعديل المطلوب؟">${s.n||''}</textarea>`;
+  const ph=el.querySelector('.phone');
+  el.querySelector('.play').onclick=()=>{
+   document.querySelectorAll('.phone video').forEach(v=>{v.pause()});
+   let v=ph.querySelector('video');
+   if(!v){v=document.createElement('video');v.src=`v/${c.i}.mp4`;v.playsInline=true;v.controls=true;ph.insertBefore(v,ph.querySelector('.ui'))}
+   ph.classList.add('playing');v.play();
+  };
+  el.querySelector('.ok').onclick=()=>{st[c.i]={...s,v:s.v==='ok'?'':'ok'};save();render()};
+  el.querySelector('.fix').onclick=()=>{st[c.i]={...s,v:s.v==='fix'?'':'fix'};save();render()};
+  el.querySelector('textarea').oninput=e=>{st[c.i]={...(st[c.i]||{}),v:'fix',n:e.target.value};save()};
+  g.appendChild(el);
+ });
+ count();
+}
+function count(){let o=0,f=0;for(const k in st){if(st[k].v==='ok')o++;if(st[k].v==='fix')f++}
+ document.getElementById('cnt').textContent=`${o} معتمد · ${f} تعديل`}
+document.querySelectorAll('#plat button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('#plat button').forEach(x=>x.classList.toggle('on',x===b));plat=b.dataset.p;render()});
+document.getElementById('safeT').onchange=e=>document.getElementById('grid').classList.toggle('showsafe',e.target.checked);
+document.getElementById('wa').onclick=()=>{
+ let ok=[],fx=[];
+ clips.forEach(c=>{const s=st[c.i];if(!s)return;const t=c.t.replace(/\n/g,' ');
+  if(s.v==='ok')ok.push(c.i);if(s.v==='fix')fx.push(`${c.i}. ${t}: ${s.n||'بدون تفاصيل'}`)});
+ const rest=clips.length-ok.length-fx.length;
+ let m=`رد التعميد · مقاطع معرض الصقور\n\nمعتمد (${ok.length}): ${ok.join('، ')||'لا يوجد'}\n`;
+ if(fx.length)m+=`\nيحتاج تعديل (${fx.length}):\n${fx.join('\n')}\n`;
+ if(rest)m+=`\nبدون رد: ${rest}\n`;
+ window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank');
+};
+fetch('clips.json').then(r=>r.json()).then(d=>{clips=d;
+ document.getElementById('nClips').textContent=d.length;
+ document.getElementById('nMin').textContent=Math.round(d.reduce((a,c)=>a+c.d,0)/60);
+ const ig=document.getElementById('igg');
+ d.slice().reverse().forEach(c=>{const im=document.createElement('img');im.src=`c/${c.i}.jpg`;im.loading='lazy';im.alt='';ig.appendChild(im)});
+ render()});
+</script>
+</body>
+</html>
