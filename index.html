@@ -94,7 +94,17 @@ textarea{font:inherit;font-size:15px;width:100%;border:1px solid var(--line);bor
 footer{padding:80px 0 120px;color:var(--mut);font-size:14px}
 .appr{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:14px;max-width:520px}
 .al{display:block;font-size:16px;margin-bottom:8px}
-label.chk{display:block}label.chk small{display:block;font-size:13px;opacity:.85;margin-top:2px}
+label.chk{display:block}
+.cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-top:22px}
+.day{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.day h4{font-size:16px;font-weight:700;display:flex;justify-content:space-between;margin-bottom:8px}
+.day h4 small{color:var(--mut);font-weight:400;font-size:13px}
+.slot{display:flex;gap:10px;align-items:center;padding:6px 0;border-top:1px solid #f2eef7}
+.slot:first-of-type{border-top:0}
+.slot img{width:38px;height:56px;object-fit:cover;border-radius:6px;flex:none}
+.slot .li-ic{width:38px;height:56px;border-radius:6px;background:#0A66C2;color:#fff;display:grid;place-items:center;font:700 16px system-ui;flex:none}
+.slot b{display:block;font-size:14px;line-height:1.35}
+.slot span{font-size:12px;color:var(--mut);font-family:system-ui}label.chk small{display:block;font-size:13px;opacity:.85;margin-top:2px}
 @media (max-width:860px){.li{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr);gap:20px 12px}.wrap{padding:0 16px}}
 @media (max-width:600px){
  body{padding-bottom:72px}
@@ -132,13 +142,12 @@ label.chk{display:block}label.chk small{display:block;font-size:13px;opacity:.85
   <h2>وش تغيّر في المقاطع</h2>
   <p class="lead">طبّقنا على كل مقطع ما يخص الفيديو في الدليل البصري.</p>
   <div class="done">
-   <div><b>المقاطع بدون نصوص</b><p>شلنا العناوين من داخل المقاطع، وصار العنوان كابشن البوست. تشوفه تحت كل مقطع بالشكل اللي بينزل فيه.</p></div>
+   <div><b>بدون نصوص إضافية</b><p>المقاطع بعناوينها الأصلية من المونتاج، وما أضفنا داخلها أي نص. الكابشن ينكتب في البوست، وتشوفه تحت كل مقطع بالشكل اللي بينزل فيه.</p></div>
    <div><b>التدرّج البنفسجي السفلي</b><p>التوقيع البصري بالمواصفة: 38٪ من ارتفاع اللوحة وشفافية 92٪ عند الحافة.</p></div>
    <div><b>خاتمة ثابتة</b><p>ثانيتان في آخر كل مقطع، فيها الشعار والسطر التعريفي وموضع للرعاة.</p></div>
    <div><b>الصوت والألوان</b><p>نظّفنا الضجيج وسوّينا مستوى الصوت عند ‎-14 LUFS، وحوّلنا ألوان HDR من الآيفون إلى ألوان عادية.</p></div>
    <div><b>التصدير والتسمية</b><p>H.264 بدقة 1080×1920 و30 إطاراً و16 ميجابت، والتسمية بصيغة الدليل.</p></div>
-   <div><b>أغلفة مصممة</b><p>لكل مقطع غلاف عليه عنوانه داخل المنطقة الآمنة، ويتحمّل قص شبكة إنستقرام 3:4.</p></div>
-   <div class="warn"><b>باقي: الترجمة المكتوبة</b><p>الدليل يلزم بها، لكن التفريغ الآلي للهجة فيه أخطاء. جاهزة كمسودة وتنحرق في المقاطع بعد المراجعة.</p></div>
+      <div class="warn"><b>باقي: الترجمة المكتوبة</b><p>الدليل يلزم بها، لكن التفريغ الآلي للهجة فيه أخطاء. جاهزة كمسودة وتنحرق في المقاطع بعد المراجعة.</p></div>
   </div>
  </section>
 
@@ -160,15 +169,13 @@ label.chk{display:block}label.chk small{display:block;font-size:13px;opacity:.85
     <div class="opt"><b>كل المقاطع</b><p>لا. ٢٦ منشوراً طريفاً متتالياً تزحم صفحة الشركة وتضيع نبرتها الرسمية.</p></div>
     <div class="opt"><b>مقطع واحد مختار</b><p>مقطع واحد ما يعكس حجم التغطية، ويظهر كمحتوى ترفيهي بدون سياق.</p></div>
     <div class="opt pick"><b>مقطع مجمّع من الهايلايت ✓</b><p>دقيقة واحدة من ست لحظات: انطباع الزوار عن المعرض، والأسعار، وصقّار من باكستان، والجدة حصيصه. يبيّن قدرة أهداف على التغطية الميدانية، ومعه نص منشور فيه أرقام التغطية.</p></div>
-    <div class="opt"><b>توقيت النشر</b><p>بعد نزول المقاطع على تيك توك وإنستقرام بأسبوع، عشان نضيف للمنشور أرقام المشاهدات الفعلية.</p></div>
+    <div class="opt"><b>توقيت النشر</b><p>الأحد 18 أكتوبر الساعة 10 الصبح، في منتصف جدول النشر وفي وقت ذروة لينكدإن أول أسبوع العمل.</p></div>
    </div>
    <div class="post">
     <div class="hd"><i></i><div><b>أهداف</b><small>شركة تسويق وإعلام · الآن</small></div></div>
     <div class="tx">تغطيتنا لمعرض الصقور
 
 26 لقاءً ميدانياً بين أجنحة المعرض، مع الصقّارين والزوار وضيوف قدموا من داخل المملكة وخارجها. سألناهم عن أسعار الطيور وأسمائها، والصفة التي يبحثون عنها في الصقر.
-
-حققت المقاطع [عدد المشاهدات] مشاهدة على تيك توك وإنستقرام خلال [عدد الأيام] أيام.
 
 في هذا المقطع دقيقة من أبرز اللحظات.
 
@@ -181,8 +188,15 @@ label.chk{display:block}label.chk small{display:block;font-size:13px;opacity:.85
  </section>
 
  <section>
+  <h2>جدول النشر المقترح</h2>
+  <p class="lead">مقطعين يومياً على تيك توك وإنستقرام لمدة 13 يوم: الساعة 4 العصر و9 الليل بتوقيت السعودية، ومنشور لينكدإن يوم الأحد. بدأنا بأقوى المقاطع، وباعدنا بين المقاطع المتشابهة.</p>
+  <div class="cal" id="cal"></div>
+  <div class="appr card" data-id="calendar" data-label="جدول النشر"></div>
+ </section>
+
+ <section>
   <h2>شبكة إنستقرام</h2>
-  <p class="lead">شكل الحساب بعد النشر. الشبكة تقص الغلاف إلى 3:4، والعنوان باقٍ داخل الإطار.</p>
+  <p class="lead">شكل الحساب بعد النشر. الشبكة تقص غلاف كل مقطع إلى 3:4.</p>
   <div class="iggrid" id="igg"><div class="ighd"><i></i><div><b>ahdaf</b><br><small>أهداف · تسويق وإعلام</small></div></div></div>
   <div class="appr card" data-id="iggrid" data-label="شبكة إنستقرام (الأغلفة)"></div>
  </section>
@@ -260,7 +274,7 @@ function render(){
   bind(el,c.i,s,render);
   g.appendChild(el);
  });
- renderExtra(); count();
+ renderExtra(); renderCal(); count();
 }
 function apprHTML(id,s){return `<div class="act"><button class="ok ${s.v==='ok'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button></div>
    <div class="who">${s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):''}</div>
@@ -278,7 +292,24 @@ function renderExtra(){
   bind(el,id,s,()=>{renderExtra();count()});
  });
 }
-const EXTRA={highlight:'منشور لينكدإن',iggrid:'شبكة إنستقرام'};
+const EXTRA={highlight:'منشور لينكدإن',iggrid:'شبكة إنستقرام',calendar:'جدول النشر'};
+// suggested schedule: [date, [clip numbers]] at 4pm and 9pm; 'li' = LinkedIn highlight at 10am
+const PLAN=[['2026-10-13',[12,8]],['2026-10-14',[3,22]],['2026-10-15',[10,2]],['2026-10-16',[21,26]],['2026-10-17',[16,13]],
+ ['2026-10-18',['li',14,5]],['2026-10-19',[23,7]],['2026-10-20',[17,25]],['2026-10-21',[1,18]],['2026-10-22',[15,24]],
+ ['2026-10-23',[6,20]],['2026-10-24',[4,9]],['2026-10-25',[19,11]]];
+function renderCal(){
+ const el=document.getElementById('cal'); if(!el)return;
+ el.innerHTML=PLAN.map(([d,items],k)=>{
+  const dt=new Date(d+'T12:00:00');
+  const wd=dt.toLocaleDateString('ar-SA-u-ca-gregory-nu-latn',{weekday:'long'});
+  const dm=dt.toLocaleDateString('ar-SA-u-ca-gregory-nu-latn',{day:'numeric',month:'long'});
+  const clipsOnly=items.filter(x=>x!=='li'); const times=['4:00 م','9:00 م'];
+  const rows=items.map(x=>{
+   if(x==='li')return `<div class="slot"><div class="li-ic">in</div><div><b>منشور لينكدإن: المقطع المجمّع</b><span>10:00 ص · لينكدإن</span></div></div>`;
+   const c=clips.find(c=>c.i===x); const t=times[clipsOnly.indexOf(x)];
+   return `<div class="slot"><img src="c/${x}.jpg" alt="" loading="lazy"><div><b>${String(x).padStart(2,'0')}. ${esc(c.t.replace(/\n/g,' '))}</b><span>${t} · تيك توك وإنستقرام</span></div></div>`}).join('');
+  return `<div class="day"><h4>${wd} ${dm}<small>اليوم ${k+1}</small></h4>${rows}</div>`}).join('');
+}
 function count(){let o=0,f=0;for(const k in st){if(st[k].v==='ok')o++;if(st[k].v==='fix')f++}
  document.getElementById('cnt').textContent=`${o} معتمد · ${f} تعديل`}
 document.querySelectorAll('#plat button').forEach(b=>b.onclick=()=>{
