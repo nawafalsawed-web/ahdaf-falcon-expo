@@ -67,7 +67,9 @@ label.chk{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--mut
 .act button.fix.on{background:#b5651d;border-color:#b5651d;color:#fff}
 textarea{font:inherit;font-size:15px;width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;resize:vertical;min-height:44px;display:none}
 .card.needfix textarea{display:block}
-.dl{font-size:14px;color:var(--p);text-decoration:none}
+.who{font-size:13px;color:var(--mut);min-height:1em}
+.send input{font:inherit;font-size:14px;border:0;border-radius:999px;padding:7px 12px;width:110px}
+.live{width:8px;height:8px;border-radius:50%;background:#25D366;display:inline-block;margin-inline-end:6px}
 .li{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:40px;margin-top:28px;align-items:start}
 .why{display:flex;flex-direction:column;gap:12px}
 .opt{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px}
@@ -124,7 +126,7 @@ footer{padding:80px 0 120px;color:var(--mut);font-size:14px}
 
  <section>
   <h2>المقاطع</h2>
-  <p class="lead">اضغط على أي مقطع لتشغيله. بدّل بين المنصتين لتشوف شكله على كل واحدة، وفعّل المنطقة الآمنة لتشوف حدود أزرار التطبيق.</p>
+  <p class="lead">اضغط على أي مقطع لتشغيله. بدّل بين المنصتين لتشوف شكله على كل واحدة، وفعّل المنطقة الآمنة لتشوف حدود أزرار التطبيق. الاعتماد والملاحظات تنحفظ وتظهر عند كل من يفتح الرابط.</p>
   <div class="bar">
    <div class="seg" id="plat"><button class="on" data-p="tt">تيك توك</button><button data-p="ig">إنستقرام</button></div>
    <label class="chk"><input type="checkbox" id="safeT"> إظهار المنطقة الآمنة</label>
@@ -163,7 +165,7 @@ footer{padding:80px 0 120px;color:var(--mut);font-size:14px}
 </main>
 <footer class="wrap">أهداف · نربط الإبداع بالهدف · ahdaf.co</footer>
 
-<div class="send"><span id="cnt">0 معتمد · 0 تعديل</span><button id="wa">إرسال الرد عبر واتساب</button></div>
+<div class="send"><input id="me" placeholder="اسمك" maxlength="40"><span><i class="live"></i><span id="cnt">0 معتمد · 0 تعديل</span></span><button id="wa">إرسال الرد عبر واتساب</button></div>
 
 <script>
 const ICON={
@@ -174,8 +176,36 @@ share:'<svg viewBox="0 0 24 24"><path d="M14 4l8 8-8 8v-5c-6 0-9.5 1.8-12 6 1-6 
 send:'<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>'};
 const SAFE={tt:{t:240,b:660,s:120},ig:{t:270,b:670,s:65}};
 let plat='tt', clips=[], st={};
-try{st=JSON.parse(localStorage.getItem('ahdaf-falcon')||'{}')}catch(e){}
-const save=()=>{try{localStorage.setItem('ahdaf-falcon',JSON.stringify(st))}catch(e){};count()};
+// shared state: Firestore (ahdaf-influencers) collection falcon_approvals, one doc per clip
+const DB='https://firestore.googleapis.com/v1/projects/ahdaf-influencers/databases/(default)/documents';
+const DOC=i=>`projects/ahdaf-influencers/databases/(default)/documents/falcon_approvals/${i}`;
+const meEl=document.getElementById('me');
+try{meEl.value=localStorage.getItem('ahdaf-falcon-me')||''}catch(e){}
+meEl.oninput=()=>{try{localStorage.setItem('ahdaf-falcon-me',meEl.value)}catch(e){}};
+const timers={};
+function put(i){
+ const s=st[i]; s.by=meEl.value.trim().slice(0,40);
+ clearTimeout(timers[i]);
+ timers[i]=setTimeout(()=>fetch(DB+':commit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({writes:[{
+  update:{name:DOC(i),fields:{v:{stringValue:s.v||''},n:{stringValue:(s.n||'').slice(0,1000)},by:{stringValue:s.by}}},
+  updateTransforms:[{fieldPath:'ts',setToServerValue:'REQUEST_TIME'}]}]})}).then(r=>{if(!r.ok)alert('ما انحفظ التعديل، جرّب مرة ثانية')}),400);
+}
+const save=i=>{put(i);count()};
+let last='';
+async function load(){
+ try{
+  const d=await (await fetch(DB+'/falcon_approvals?pageSize=100')).json(); const n={};
+  (d.documents||[]).forEach(x=>{const f=x.fields;n[x.name.split('/').pop()]={v:f.v?.stringValue||'',n:f.n?.stringValue||'',by:f.by?.stringValue||''}});
+  const j=JSON.stringify(n); if(j===last)return;
+  // don't rebuild cards while someone is typing or watching; retry next poll
+  if(document.activeElement&&document.activeElement.tagName==='TEXTAREA')return;
+  if([...document.querySelectorAll('.phone video')].some(v=>!v.paused))return;
+  last=j;
+  st=n; if(clips.length)render();
+ }catch(e){}
+}
+setInterval(load,8000);
+const esc=t=>t.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const fmt=s=>Math.floor(s/60)+':'+String(Math.round(s%60)).padStart(2,'0');
 function ui(c){
  const t=c.t.replace(/\n/g,' ');
@@ -196,7 +226,8 @@ function render(){
    <button class="play" aria-label="تشغيل"><span><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></button></div>
    <div class="meta"><b>${String(c.i).padStart(2,'0')}. ${c.t.replace(/\n/g,' ')}${c.added?'<span class="tag">عنوان مقترح</span>':''}</b><span>${fmt(c.d)}</span></div>
    <div class="act"><button class="ok ${s.v==='ok'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button></div>
-   <textarea placeholder="وش التعديل المطلوب؟">${s.n||''}</textarea>`;
+   <div class="who">${s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):''}</div>
+   <textarea placeholder="وش التعديل المطلوب؟">${esc(s.n||'')}</textarea>`;
   const ph=el.querySelector('.phone');
   el.querySelector('.play').onclick=()=>{
    document.querySelectorAll('.phone video').forEach(v=>{v.pause()});
@@ -204,9 +235,9 @@ function render(){
    if(!v){v=document.createElement('video');v.src=`v/${c.i}.mp4`;v.playsInline=true;v.controls=true;ph.insertBefore(v,ph.querySelector('.ui'))}
    ph.classList.add('playing');v.play();
   };
-  el.querySelector('.ok').onclick=()=>{st[c.i]={...s,v:s.v==='ok'?'':'ok'};save();render()};
-  el.querySelector('.fix').onclick=()=>{st[c.i]={...s,v:s.v==='fix'?'':'fix'};save();render()};
-  el.querySelector('textarea').oninput=e=>{st[c.i]={...(st[c.i]||{}),v:'fix',n:e.target.value};save()};
+  el.querySelector('.ok').onclick=()=>{st[c.i]={...s,v:s.v==='ok'?'':'ok'};save(c.i);render()};
+  el.querySelector('.fix').onclick=()=>{st[c.i]={...s,v:s.v==='fix'?'':'fix'};save(c.i);render()};
+  el.querySelector('textarea').oninput=e=>{st[c.i]={...(st[c.i]||{}),v:'fix',n:e.target.value};save(c.i)};
   g.appendChild(el);
  });
  count();
@@ -226,7 +257,7 @@ document.getElementById('wa').onclick=()=>{
  if(rest)m+=`\nبدون رد: ${rest}\n`;
  window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank');
 };
-fetch('clips.json').then(r=>r.json()).then(d=>{clips=d;
+fetch('clips.json').then(r=>r.json()).then(async d=>{clips=d;await load();
  document.getElementById('nClips').textContent=d.length;
  document.getElementById('nMin').textContent=Math.round(d.reduce((a,c)=>a+c.d,0)/60);
  const ig=document.getElementById('igg');
