@@ -68,6 +68,8 @@ label.chk{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--mut
 textarea{font:inherit;font-size:15px;width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;resize:vertical;min-height:44px;display:none}
 .card.needfix textarea{display:block}
 .who{font-size:13px;color:var(--mut);min-height:1em}
+.done-tag{display:inline-block;background:#e7f5ee;color:#1f7a4d;font-weight:700;border-radius:6px;padding:1px 8px;margin-inline-end:4px}
+.req{font-size:13px;color:var(--mut);background:#faf8fc;border-radius:8px;padding:6px 10px}
 .send input{font:inherit;font-size:14px;border:0;border-radius:999px;padding:7px 12px;width:110px}
 .live{width:8px;height:8px;border-radius:50%;background:#25D366;display:inline-block;margin-inline-end:6px}
 .li{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:40px;margin-top:28px;align-items:start}
@@ -189,7 +191,7 @@ label.chk{display:block}
 
  <section>
   <h2>جدول النشر المقترح</h2>
-  <p class="lead">مقطعين يومياً على تيك توك وإنستقرام لمدة 13 يوم: الساعة 4 العصر و9 الليل بتوقيت السعودية، ومنشور لينكدإن يوم الأحد. بدأنا بأقوى المقاطع، وباعدنا بين المقاطع المتشابهة.</p>
+  <p class="lead">مقطعين يومياً على تيك توك وإنستقرام لمدة 13 يوم (مقطع 02 خارج الجدول حسب الملاحظة): الساعة 4 العصر و9 الليل بتوقيت السعودية، ومنشور لينكدإن يوم الأحد. بدأنا بأقوى المقاطع، وباعدنا بين المقاطع المتشابهة.</p>
   <div class="cal" id="cal"></div>
   <div class="appr card" data-id="calendar" data-label="جدول النشر"></div>
  </section>
@@ -206,6 +208,7 @@ label.chk{display:block}
 <div class="send"><input id="me" placeholder="اسمك" maxlength="40"><span><i class="live"></i><span id="cnt">0 معتمد · 0 تعديل</span></span><button id="wa">إرسال الرد عبر واتساب</button></div>
 
 <script>
+const REV='4'; // bump when videos/posters change
 const ICON={
 heart:'<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.2 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.1 1.8-1.9 3.3-3.1 5.4-3.1 3.6 0 5.8 3.7 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg>',
 com:'<svg viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.6 1.4 4.9 3.6 6.5L5 22l4.3-2.3c.9.2 1.8.3 2.7.3 5.5 0 10-3.8 10-8.5S17.5 3 12 3z"/></svg>',
@@ -260,7 +263,7 @@ function render(){
  clips.forEach(c=>{
   const s=st[c.i]||{}; const el=document.createElement('div');
   el.className='card'+(s.v==='fix'?' needfix':'');
-  el.innerHTML=`<div class="phone"><img class="poster" src="c/${c.i}.jpg" loading="lazy" alt="">${ui(c)}${safeBox()}
+  el.innerHTML=`<div class="phone"><img class="poster" src="c/${c.i}.jpg?${REV}" loading="lazy" alt="">${ui(c)}${safeBox()}
    <button class="play" aria-label="تشغيل"><span><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></button></div>
    <div class="meta"><b>${String(c.i).padStart(2,'0')}. ${c.t.replace(/\n/g,' ')}${c.added?'<span class="tag">كابشن مقترح</span>':''}</b><span>${fmt(c.d)}</span></div>
    ${apprHTML(c.i,s)}`;
@@ -268,7 +271,7 @@ function render(){
   el.querySelector('.play').onclick=()=>{
    document.querySelectorAll('.phone video').forEach(v=>{v.pause()});
    let v=ph.querySelector('video');
-   if(!v){v=document.createElement('video');v.src=`v/${c.i}.mp4`;v.playsInline=true;v.controls=true;ph.insertBefore(v,ph.querySelector('.ui'))}
+   if(!v){v=document.createElement('video');v.src=`v/${c.i}.mp4?${REV}`;v.playsInline=true;v.controls=true;ph.insertBefore(v,ph.querySelector('.ui'))}
    ph.classList.add('playing');v.play();
   };
   bind(el,c.i,s,render);
@@ -277,11 +280,12 @@ function render(){
  renderExtra(); renderCal(); count();
 }
 function apprHTML(id,s){return `<div class="act"><button class="ok ${s.v==='ok'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button></div>
-   <div class="who">${s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):''}</div>
+   <div class="who">${s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):s.v==='done'?'<span class="done-tag">✓ تم التعديل</span> لو فيه تعديل ثاني اضغط «يحتاج تعديل»':''}</div>
+   ${s.v==='done'&&s.n?`<div class="req">الطلب: ${esc(s.n)}</div>`:''}
    <textarea placeholder="وش التعديل المطلوب؟">${esc(s.n||'')}</textarea>`}
 function bind(el,id,s,re){
  el.querySelector('.ok').onclick=()=>{st[id]={...s,v:s.v==='ok'?'':'ok'};save(id);re()};
- el.querySelector('.fix').onclick=()=>{st[id]={...s,v:s.v==='fix'?'':'fix'};save(id);re()};
+ el.querySelector('.fix').onclick=()=>{st[id]={...s,v:s.v==='fix'?'':'fix',n:s.v==='done'?'':s.n};save(id);re()};
  el.querySelector('textarea').oninput=e=>{st[id]={...(st[id]||{}),v:'fix',n:e.target.value};save(id)};
 }
 function renderExtra(){
@@ -294,9 +298,9 @@ function renderExtra(){
 }
 const EXTRA={highlight:'منشور لينكدإن',iggrid:'شبكة إنستقرام',calendar:'جدول النشر'};
 // suggested schedule: [date, [clip numbers]] at 4pm and 9pm; 'li' = LinkedIn highlight at 10am
-const PLAN=[['2026-10-13',[12,8]],['2026-10-14',[3,22]],['2026-10-15',[10,2]],['2026-10-16',[21,26]],['2026-10-17',[16,13]],
+const PLAN=[['2026-10-13',[12,8]],['2026-10-14',[3,22]],['2026-10-15',[10,11]],['2026-10-16',[21,26]],['2026-10-17',[16,13]],
  ['2026-10-18',['li',14,5]],['2026-10-19',[23,7]],['2026-10-20',[17,25]],['2026-10-21',[1,18]],['2026-10-22',[15,24]],
- ['2026-10-23',[6,20]],['2026-10-24',[4,9]],['2026-10-25',[19,11]]];
+ ['2026-10-23',[6,20]],['2026-10-24',[4,9]],['2026-10-25',[19]]];
 function renderCal(){
  const el=document.getElementById('cal'); if(!el)return;
  el.innerHTML=PLAN.map(([d,items],k)=>{
@@ -307,23 +311,24 @@ function renderCal(){
   const rows=items.map(x=>{
    if(x==='li')return `<div class="slot"><div class="li-ic">in</div><div><b>منشور لينكدإن: المقطع المجمّع</b><span>10:00 ص · لينكدإن</span></div></div>`;
    const c=clips.find(c=>c.i===x); const t=times[clipsOnly.indexOf(x)];
-   return `<div class="slot"><img src="c/${x}.jpg" alt="" loading="lazy"><div><b>${String(x).padStart(2,'0')}. ${esc(c.t.replace(/\n/g,' '))}</b><span>${t} · تيك توك وإنستقرام</span></div></div>`}).join('');
+   return `<div class="slot"><img src="c/${x}.jpg?${REV}" alt="" loading="lazy"><div><b>${String(x).padStart(2,'0')}. ${esc(c.t.replace(/\n/g,' '))}</b><span>${t} · تيك توك وإنستقرام</span></div></div>`}).join('');
   return `<div class="day"><h4>${wd} ${dm}<small>اليوم ${k+1}</small></h4>${rows}</div>`}).join('');
 }
-function count(){let o=0,f=0;for(const k in st){if(st[k].v==='ok')o++;if(st[k].v==='fix')f++}
- document.getElementById('cnt').textContent=`${o} معتمد · ${f} تعديل`}
+function count(){let o=0,f=0,dn=0;for(const k in st){if(st[k].v==='ok')o++;if(st[k].v==='fix')f++;if(st[k].v==='done')dn++}
+ document.getElementById('cnt').textContent=`${o} معتمد · ${f} تعديل`+(dn?` · ${dn} تم`:'')}
 document.querySelectorAll('#plat button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('#plat button').forEach(x=>x.classList.toggle('on',x===b));plat=b.dataset.p;render()});
 document.getElementById('safeT').onchange=e=>document.getElementById('grid').classList.toggle('showsafe',e.target.checked);
 document.getElementById('wa').onclick=()=>{
- let ok=[],fx=[];
+ let ok=[],fx=[],dn=[];
  clips.forEach(c=>{const s=st[c.i];if(!s)return;const t=c.t.replace(/\n/g,' ');
-  if(s.v==='ok')ok.push(c.i);if(s.v==='fix')fx.push(`${c.i}. ${t}: ${s.n||'بدون تفاصيل'}`)});
+  if(s.v==='done')dn.push(c.i);if(s.v==='ok')ok.push(c.i);if(s.v==='fix')fx.push(`${c.i}. ${t}: ${s.n||'بدون تفاصيل'}`)});
  for(const id in EXTRA){const s=st[id];if(!s)continue;
   if(s.v==='ok')ok.push(EXTRA[id]);if(s.v==='fix')fx.push(`${EXTRA[id]}: ${s.n||'بدون تفاصيل'}`)}
- const rest=clips.length+2-ok.length-fx.length;
+ const rest=clips.length+3-ok.length-fx.length-dn.length;
  let m=`رد التعميد · مقاطع معرض الصقور\n\nمعتمد (${ok.length}): ${ok.join('، ')||'لا يوجد'}\n`;
  if(fx.length)m+=`\nيحتاج تعديل (${fx.length}):\n${fx.join('\n')}\n`;
+ if(dn.length)m+=`\nتم تعديلها بانتظار الاعتماد (${dn.length}): ${dn.join('، ')}\n`;
  if(rest)m+=`\nبدون رد: ${rest}\n`;
  window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank');
 };
@@ -331,7 +336,7 @@ fetch('clips.json').then(r=>r.json()).then(async d=>{clips=d;await load();
  document.getElementById('nClips').textContent=d.length;
  document.getElementById('nMin').textContent=Math.round(d.reduce((a,c)=>a+c.d,0)/60);
  const ig=document.getElementById('igg');
- d.slice().reverse().forEach(c=>{const im=document.createElement('img');im.src=`c/${c.i}.jpg`;im.loading='lazy';im.alt='';ig.appendChild(im)});
+ d.slice().reverse().forEach(c=>{const im=document.createElement('img');im.src=`c/${c.i}.jpg?${REV}`;im.loading='lazy';im.alt='';ig.appendChild(im)});
  render()});
 </script>
 </body>
