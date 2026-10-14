@@ -40,6 +40,9 @@ button{font:inherit;font-size:14px;border:1px solid var(--line);background:#fff;
 .ed textarea{font:inherit;font-size:14px;width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:60px;resize:vertical}
 .ed button{width:100%;background:#b5651d;border-color:#b5651d;color:#fff}
 .me{font:inherit;font-size:15px;border:1px solid var(--line);border-radius:8px;padding:6px 12px;margin-bottom:14px;width:220px;max-width:100%}
+.dl{display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-size:14px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px;color:#4C0192;text-decoration:none;font-weight:700}
+.dl:hover{background:#f4eefb}
+.dl svg{width:16px;height:16px}
 footer{color:var(--mut);text-align:center;padding:48px 0}
 @media(max-width:640px){.wrap{padding:0 16px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{padding:8px}.li{grid-template-columns:1fr}h2{font-size:24px}}
 </style>
@@ -60,7 +63,9 @@ footer{color:var(--mut);text-align:center;padding:48px 0}
 </main>
 <footer>أهداف · الصفحة تتحدّث تلقائياً مع صفحة التعميد</footer>
 <script>
-const REV='6';
+const REV='7';
+const DL=n=>`https://github.com/nawafalsawed-web/ahdaf-falcon-expo/releases/download/clips-v5/falcon-expo-${n}.mp4`; // full-quality 1080p files live in a GitHub release, not the Pages repo
+
 const DB='https://firestore.googleapis.com/v1/projects/ahdaf-influencers/databases/(default)/documents/falcon_approvals?pageSize=100';
 const LI_CAP=`تغطيتنا لمعرض الصقور 26 لقاءً ميدانياً
 بين أجنحة المعرض
@@ -100,6 +105,7 @@ async function load(){
   el.innerHTML=`<video src="v/${c.i}.mp4?${REV}" poster="c/${c.i}.jpg?${REV}" controls playsinline preload="none"></video>
    <b>${String(c.i).padStart(2,'0')}. ${esc(c.t.replace(/\n/g,' '))}</b><small>${f?'✓ تعميد نهائي':'✓ معتمد'}</small>
    <div class="cap">${esc(cap)}</div><button class="cp">نسخ الكابشن</button>
+   <a class="dl" style="margin-top:8px" href="${DL(String(c.i).padStart(2,'0'))}" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>تحميل المقطع</a>
    <div class="act"><button class="fin ${f?'on':''}">${f?'✓ تعميد نهائي':'تعميد نهائي'}</button><button class="fx">تعديل</button></div>
    <div class="ed"><textarea placeholder="وش التعديل المطلوب؟"></textarea><button>إرسال التعديل</button></div>`;
   el.querySelector('.cp').onclick=e=>copy(e.target,cap);
@@ -111,7 +117,7 @@ async function load(){
  });
  const li=document.getElementById('liBox');
  li.innerHTML=st.highlight==='ok'?`<h2>لينكدإن</h2><div class="li"><video src="v/highlight.mp4?${REV}" poster="c/highlight.jpg?${REV}" controls playsinline preload="none"></video>
-  <div><div class="cap">${esc(LI_CAP)}</div><button>نسخ الكابشن</button></div></div>`:'';
+  <div><div class="cap">${esc(LI_CAP)}</div><button>نسخ الكابشن</button><a class="dl" style="margin-top:8px" href="${DL('linkedin')}" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>تحميل المقطع</a></div></div>`:'';
  if(st.highlight==='ok')li.querySelector('button').onclick=e=>copy(e.target,LI_CAP);
 }
 fetch('clips.json').then(r=>r.json()).then(d=>{clips=d;load();setInterval(load,10000)});
