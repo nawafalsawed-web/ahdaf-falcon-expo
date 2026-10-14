@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>المعتمد · معرض الصقور</title>
+<meta name="description" content="المقاطع المعتمدة فقط من تغطية معرض الصقور">
+<style>
+@font-face{font-family:SS;src:url(a/SaudiSerif-Regular.ttf);font-weight:400}
+@font-face{font-family:SS;src:url(a/SaudiSerif-Bold.ttf);font-weight:700}
+:root{--p:#4C0192;--ink:#111;--mut:#6b6477;--line:#e6e0ee;--bg:#fbfafd;--ok:#1f7a4d}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:SS,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+header{background:linear-gradient(120deg,#2C0055,#6A16B8);color:#fff;padding:24px 0 40px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.top img{height:34px}
+.top a{color:#fff;font-size:15px;opacity:.85}
+h1{font-size:clamp(34px,6vw,64px);line-height:1.1;margin-top:36px}
+header p{opacity:.85;font-size:18px;margin-top:8px}
+h2{font-size:28px;margin:48px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
+video{width:100%;aspect-ratio:9/16;border-radius:10px;background:#000;display:block}
+.card b{display:block;font-size:16px;margin:10px 0 6px}
+.card small{color:var(--ok);font-size:13px}
+.cap{white-space:pre-line;background:var(--bg);border-radius:8px;padding:8px 10px;font-size:15px;margin-top:6px}
+button{font:inherit;font-size:14px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 12px;cursor:pointer;margin-top:8px}
+.li{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:20px;align-items:start}
+.li .cap{font-size:16px}
+.empty{color:var(--mut);font-size:18px;padding:24px;border:1px dashed var(--line);border-radius:14px;text-align:center}
+.st{display:flex;gap:10px;flex-wrap:wrap}
+.st span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 14px;font-size:15px}
+.st span.y{border-color:var(--ok);color:var(--ok)}
+footer{color:var(--mut);text-align:center;padding:48px 0}
+@media(max-width:640px){.wrap{padding:0 16px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{padding:8px}.li{grid-template-columns:1fr}h2{font-size:24px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+ <div class="top"><img src="a/logo-white.png" alt="أهداف"><a href="./">← صفحة التعميد الكاملة</a></div>
+ <h1>المعتمد للنشر</h1>
+ <p id="sum">نحمّل...</p>
+</div></header>
+<main class="wrap">
+ <h2>الحالة العامة</h2>
+ <div class="st" id="st"></div>
+ <h2>مقاطع تيك توك وإنستقرام</h2>
+ <div class="grid" id="grid"></div>
+ <div id="liBox"></div>
+</main>
+<footer>أهداف · الصفحة تتحدّث تلقائياً مع صفحة التعميد</footer>
+<script>
+const REV='6';
+const DB='https://firestore.googleapis.com/v1/projects/ahdaf-influencers/databases/(default)/documents/falcon_approvals?pageSize=100';
+const LI_CAP=`تغطيتنا لمعرض الصقور
+
+26 لقاءً ميدانياً بين أجنحة المعرض، مع الصقّارين والزوار وضيوف قدموا من داخل المملكة وخارجها. سألناهم عن أسعار الطيور وأسمائها، والصفة التي يبحثون عنها في الصقر.
+
+في هذا المقطع دقيقة من أبرز اللحظات.
+
+#معرض_الصقور_والصيد_السعودي_الدولي #تغطية_ميدانية #صناعة_المحتوى #التسويق`;
+const TAGS='#معرض_الصقور #أهداف';
+const esc=t=>t.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+let clips=[],last='';
+function copy(b,t){navigator.clipboard.writeText(t).then(()=>{b.textContent='✓ انتسخ';setTimeout(()=>b.textContent='نسخ الكابشن',1500)})}
+async function load(){
+ let st={};
+ try{(((await (await fetch(DB)).json()).documents)||[]).forEach(x=>st[x.name.split('/').pop()]=x.fields.v?.stringValue||'')}catch(e){return}
+ const j=JSON.stringify(st); if(j===last)return;
+ if([...document.querySelectorAll('video')].some(v=>!v.paused))return; // don't interrupt playback
+ last=j;
+ const ok=clips.filter(c=>st[c.i]==='ok');
+ document.getElementById('sum').textContent=`${ok.length} من ${clips.length} مقطع معتمد`;
+ document.getElementById('st').innerHTML=[['highlight','منشور لينكدإن'],['calendar','جدول النشر'],['iggrid','شبكة إنستقرام']]
+  .map(([k,l])=>`<span class="${st[k]==='ok'?'y':''}">${l}: ${st[k]==='ok'?'✓ معتمد':'لسا'}</span>`).join('');
+ const g=document.getElementById('grid');
+ g.innerHTML=ok.length?'':'<div class="empty">ما فيه مقاطع معتمدة للحين</div>';
+ ok.forEach(c=>{
+  const cap=c.t+'\n'+TAGS, el=document.createElement('div'); el.className='card';
+  el.innerHTML=`<video src="v/${c.i}.mp4?${REV}" poster="c/${c.i}.jpg?${REV}" controls playsinline preload="none"></video>
+   <b>${String(c.i).padStart(2,'0')}. ${esc(c.t.replace(/\n/g,' '))}</b><small>✓ معتمد</small>
+   <div class="cap">${esc(cap)}</div><button>نسخ الكابشن</button>`;
+  el.querySelector('button').onclick=e=>copy(e.target,cap);
+  g.appendChild(el);
+ });
+ const li=document.getElementById('liBox');
+ li.innerHTML=st.highlight==='ok'?`<h2>لينكدإن</h2><div class="li"><video src="v/highlight.mp4?${REV}" poster="c/highlight.jpg?${REV}" controls playsinline preload="none"></video>
+  <div><div class="cap">${esc(LI_CAP)}</div><button>نسخ الكابشن</button></div></div>`:'';
+ if(st.highlight==='ok')li.querySelector('button').onclick=e=>copy(e.target,LI_CAP);
+}
+fetch('clips.json').then(r=>r.json()).then(d=>{clips=d;load();setInterval(load,10000)});
+</script>
+</body>
+</html>
