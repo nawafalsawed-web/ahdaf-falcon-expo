@@ -65,6 +65,14 @@ label.chk{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--mut
 .act button{flex:1;font:inherit;font-size:15px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px;cursor:pointer}
 .act button.ok.on{background:#1f7a4d;border-color:#1f7a4d;color:#fff}
 .act button.fix.on{background:#b5651d;border-color:#b5651d;color:#fff}
+.act button.no.on{background:#9b1c1c;border-color:#9b1c1c;color:#fff}
+.card.rejected .phone,.card.cut .phone{opacity:.45}
+.goal{font-size:12px;background:#eef3f8;color:#2d4a66;border-radius:6px;padding:1px 7px;margin-inline-start:6px;white-space:nowrap}
+.goal.cut{background:#fbeaea;color:#9b1c1c}
+.why-cut{font-size:13px;color:#9b1c1c;margin:-4px 0 6px}
+.filt{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.filt button{font:inherit;font-size:14px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;cursor:pointer;color:var(--mut)}
+.filt button.on{background:var(--p);border-color:var(--p);color:#fff}
 textarea{font:inherit;font-size:15px;width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;resize:vertical;min-height:44px;display:none}
 .card.needfix textarea{display:block}
 .who{font-size:13px;color:var(--mut);min-height:1em}
@@ -155,11 +163,12 @@ label.chk{display:block}
 
  <section>
   <h2>المقاطع</h2>
-  <p class="lead">اضغط على أي مقطع لتشغيله. بدّل بين المنصتين لتشوف شكله على كل واحدة، وفعّل المنطقة الآمنة لتشوف حدود أزرار التطبيق. الاعتماد والملاحظات تنحفظ وتظهر عند كل من يفتح الرابط.</p>
+  <p class="lead">اضغط على أي مقطع لتشغيله. بدّل بين المنصتين لتشوف شكله على كل واحدة، وفعّل المنطقة الآمنة لتشوف حدود أزرار التطبيق. الاعتماد والملاحظات تنحفظ وتظهر عند كل من يفتح الرابط. فرزنا المقاطع حسب هدفها، واللي ما له هدف واضح عليه «مقترح نشيله» وطلع من جدول النشر.</p>
   <div class="bar">
    <div class="seg" id="plat"><button class="on" data-p="tt">تيك توك</button><button data-p="ig">إنستقرام</button></div>
    <label class="chk"><input type="checkbox" id="safeT"> إظهار المنطقة الآمنة <small>(الإطار الأصفر: الجزء اللي ما تغطيه أزرار التطبيق ونصوصه، وأي شي مهم لازم يكون داخله)</small></label>
   </div>
+  <div class="filt" id="filt"></div>
   <div class="grid" id="grid"></div>
  </section>
 
@@ -170,8 +179,8 @@ label.chk{display:block}
    <div class="why">
     <div class="opt"><b>كل المقاطع</b><p>لا. ٢٦ منشوراً طريفاً متتالياً تزحم صفحة الشركة وتضيع نبرتها الرسمية.</p></div>
     <div class="opt"><b>مقطع واحد مختار</b><p>مقطع واحد ما يعكس حجم التغطية، ويظهر كمحتوى ترفيهي بدون سياق.</p></div>
-    <div class="opt pick"><b>مقطع مجمّع من الهايلايت ✓</b><p>دقيقة واحدة من ست لحظات: انطباع الزوار عن المعرض، والأسعار، وصقّار من باكستان، والجدة حصيصه. يبيّن قدرة أهداف على التغطية الميدانية، ومعه نص منشور فيه أرقام التغطية.</p></div>
-    <div class="opt"><b>توقيت النشر</b><p>الأحد 18 أكتوبر الساعة 10 الصبح، في منتصف جدول النشر وفي وقت ذروة لينكدإن أول أسبوع العمل.</p></div>
+    <div class="opt pick"><b>مقطع مجمّع من الهايلايت ✓</b><p>دقيقة واحدة من ست لحظات: انطباع زائر عن المعرض، والأسعار، وصقّار من باكستان، والجدة حصيصه. يبيّن قدرة أهداف على التغطية الميدانية، ومعه نص منشور فيه أرقام التغطية.</p></div>
+    <div class="opt"><b>توقيت النشر</b><p>الخميس 15 أكتوبر الساعة 10 الصبح، أول يوم في جدول النشر ووقت دوام.</p></div>
    </div>
    <div class="post">
     <div class="hd"><i></i><div><b>أهداف</b><small>شركة تسويق وإعلام · الآن</small></div></div>
@@ -181,8 +190,8 @@ label.chk{display:block}
 
 في هذا المقطع دقيقة من أبرز اللحظات.
 
-#معرض_الصقور #الصقارة #أهداف</div>
-    <div class="vid"><video src="v/highlight.mp4" poster="c/highlight.jpg" controls playsinline preload="none"></video></div>
+#معرض_الصقور_والصيد_السعودي_الدولي #تغطية_ميدانية #صناعة_المحتوى #التسويق</div>
+    <div class="vid"><video src="v/highlight.mp4?5" poster="c/highlight.jpg?5" controls playsinline preload="none"></video></div>
     <div class="ft"><span>أعجبني</span><span>تعليق</span><span>مشاركة</span><span>إرسال</span></div>
    </div>
    <div class="appr card" data-id="highlight" data-label="منشور لينكدإن (المقطع المجمّع والنص)"></div>
@@ -191,7 +200,7 @@ label.chk{display:block}
 
  <section>
   <h2>جدول النشر المقترح</h2>
-  <p class="lead">مقطعين يومياً على تيك توك وإنستقرام لمدة 13 يوم (مقطع 02 خارج الجدول حسب الملاحظة): الساعة 4 العصر و9 الليل بتوقيت السعودية، ومنشور لينكدإن يوم الأحد. بدأنا بأقوى المقاطع، وباعدنا بين المقاطع المتشابهة.</p>
+  <p class="lead">ثلاث أيام حسب الملاحظة: سبعة مقاطع يومياً على تيك توك وإنستقرام من 12 الظهر إلى 10 الليل بتوقيت السعودية، ومنشور لينكدإن أول يوم الساعة 10 الصبح. المقاطع المقترح شيلها وغير المعتمدة ما تدخل الجدول. بدأنا بأقوى المقاطع، وباعدنا بين المقاطع المتشابهة.</p>
   <div class="cal" id="cal"></div>
   <div class="appr card" data-id="calendar" data-label="جدول النشر"></div>
  </section>
@@ -208,7 +217,7 @@ label.chk{display:block}
 <div class="send"><input id="me" placeholder="اسمك" maxlength="40"><span><i class="live"></i><span id="cnt">0 معتمد · 0 تعديل</span></span><button id="wa">إرسال الرد عبر واتساب</button></div>
 
 <script>
-const REV='4'; // bump when videos/posters change
+const REV='5'; // bump when videos/posters change
 const ICON={
 heart:'<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.2 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.1 1.8-1.9 3.3-3.1 5.4-3.1 3.6 0 5.8 3.7 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg>',
 com:'<svg viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.6 1.4 4.9 3.6 6.5L5 22l4.3-2.3c.9.2 1.8.3 2.7.3 5.5 0 10-3.8 10-8.5S17.5 3 12 3z"/></svg>',
@@ -216,7 +225,14 @@ save:'<svg viewBox="0 0 24 24"><path d="M6 2h12a1 1 0 0 1 1 1v19l-7-4.5L5 22V3a1
 share:'<svg viewBox="0 0 24 24"><path d="M14 4l8 8-8 8v-5c-6 0-9.5 1.8-12 6 1-6 4-11.5 12-12.5V4z"/></svg>',
 send:'<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>'};
 const SAFE={tt:{t:240,b:660,s:120},ig:{t:270,b:670,s:65}};
-let plat='tt', clips=[], st={};
+let plat='tt', clips=[], st={}, filt='all';
+// goal of each clip; CUT = no clear goal, suggested for removal
+const GOAL={3:'تفاعل',4:'تفاعل',8:'تفاعل',13:'تفاعل',24:'تفاعل',25:'تفاعل',
+ 6:'معلومة',9:'معلومة',15:'معلومة',19:'معلومة',20:'معلومة',22:'معلومة',23:'معلومة',
+ 1:'قصة',10:'قصة',12:'قصة',14:'قصة',16:'قصة',21:'قصة',26:'قصة',11:'انطباع المعرض'};
+const CUT={2:'قصير (10 ث) وما فيه غير رقم',5:'طلب المراجع يشال',7:'مكرر مع 13 (نفس سؤال التسمية)',17:'مكرر مع 24 (نفس سؤال السعر)',18:'قصير (9 ث) وما يوصل فكرة'};
+const FILT=[['all','الكل'],['ok','معتمد'],['no','غير معتمد'],['fix','يحتاج تعديل'],['none','بدون رد'],['cut','مقترح نشيله']];
+const out=i=>CUT[i]||(st[i]&&st[i].v==='no');
 // shared state: Firestore (ahdaf-influencers) collection falcon_approvals, one doc per clip
 const DB='https://firestore.googleapis.com/v1/projects/ahdaf-influencers/databases/(default)/documents';
 const DOC=i=>`projects/ahdaf-influencers/databases/(default)/documents/falcon_approvals/${i}`;
@@ -260,12 +276,17 @@ function ui(c){
 function safeBox(){const s=SAFE[plat];return `<div class="safe" style="top:${s.t/19.2}%;bottom:${s.b/19.2}%;left:${s.s/10.8}%;right:${s.s/10.8}%"></div>`}
 function render(){
  const g=document.getElementById('grid'); g.innerHTML='';
+ document.getElementById('filt').innerHTML=FILT.map(([k,l])=>`<button data-f="${k}" class="${filt===k?'on':''}">${l}</button>`).join('');
+ document.querySelectorAll('#filt button').forEach(b=>b.onclick=()=>{filt=b.dataset.f;render()});
  clips.forEach(c=>{
-  const s=st[c.i]||{}; const el=document.createElement('div');
-  el.className='card'+(s.v==='fix'?' needfix':'');
+  const s=st[c.i]||{}; const v=s.v||'';
+  if(filt==='cut'?!CUT[c.i]:filt==='none'?(v&&v!=='done'):filt!=='all'&&v!==filt)return;
+  const el=document.createElement('div');
+  el.className='card'+(v==='fix'?' needfix':'')+(v==='no'?' rejected':'')+(CUT[c.i]?' cut':'');
   el.innerHTML=`<div class="phone"><img class="poster" src="c/${c.i}.jpg?${REV}" loading="lazy" alt="">${ui(c)}${safeBox()}
    <button class="play" aria-label="تشغيل"><span><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></button></div>
-   <div class="meta"><b>${String(c.i).padStart(2,'0')}. ${c.t.replace(/\n/g,' ')}${c.added?'<span class="tag">كابشن مقترح</span>':''}</b><span>${fmt(c.d)}</span></div>
+   <div class="meta"><b>${String(c.i).padStart(2,'0')}. ${c.t.replace(/\n/g,' ')}${c.added?'<span class="tag">كابشن مقترح</span>':''}${CUT[c.i]?'<span class="goal cut">مقترح نشيله</span>':`<span class="goal">${GOAL[c.i]}</span>`}</b><span>${fmt(c.d)}</span></div>
+   ${CUT[c.i]?`<div class="why-cut">ليش: ${CUT[c.i]}</div>`:''}
    ${apprHTML(c.i,s)}`;
   const ph=el.querySelector('.phone');
   el.querySelector('.play').onclick=()=>{
@@ -279,12 +300,13 @@ function render(){
  });
  renderExtra(); renderCal(); count();
 }
-function apprHTML(id,s){return `<div class="act"><button class="ok ${s.v==='ok'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button></div>
-   <div class="who">${s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):s.v==='done'?'<span class="done-tag">✓ تم التعديل</span> لو فيه تعديل ثاني اضغط «يحتاج تعديل»':''}</div>
-   ${s.v==='done'&&s.n?`<div class="req">الطلب: ${esc(s.n)}</div>`:''}
+function apprHTML(id,s){return `<div class="act"><button class="ok ${s.v==='ok'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button><button class="no ${s.v==='no'?'on':''}">غير معتمد</button></div>
+   <div class="who">${s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):s.v==='no'?'✕ غير معتمد، ما ينزل'+(s.by?' ('+esc(s.by)+')':''):s.v==='done'?'<span class="done-tag">✓ تم التعديل</span> لو فيه تعديل ثاني اضغط «يحتاج تعديل»':''}</div>
+   ${(s.v==='done'||s.v==='no')&&s.n?`<div class="req">الطلب: ${esc(s.n)}</div>`:''}
    <textarea placeholder="وش التعديل المطلوب؟">${esc(s.n||'')}</textarea>`}
 function bind(el,id,s,re){
  el.querySelector('.ok').onclick=()=>{st[id]={...s,v:s.v==='ok'?'':'ok'};save(id);re()};
+ el.querySelector('.no').onclick=()=>{st[id]={...s,v:s.v==='no'?'':'no'};save(id);re()};
  el.querySelector('.fix').onclick=()=>{st[id]={...s,v:s.v==='fix'?'':'fix',n:s.v==='done'?'':s.n};save(id);re()};
  el.querySelector('textarea').oninput=e=>{st[id]={...(st[id]||{}),v:'fix',n:e.target.value};save(id)};
 }
@@ -298,36 +320,35 @@ function renderExtra(){
 }
 const EXTRA={highlight:'منشور لينكدإن',iggrid:'شبكة إنستقرام',calendar:'جدول النشر'};
 // suggested schedule: [date, [clip numbers]] at 4pm and 9pm; 'li' = LinkedIn highlight at 10am
-const PLAN=[['2026-10-13',[12,8]],['2026-10-14',[3,22]],['2026-10-15',[10,11]],['2026-10-16',[21,26]],['2026-10-17',[16,13]],
- ['2026-10-18',['li',14,5]],['2026-10-19',[23,7]],['2026-10-20',[17,25]],['2026-10-21',[1,18]],['2026-10-22',[15,24]],
- ['2026-10-23',[6,20]],['2026-10-24',[4,9]],['2026-10-25',[19]]];
+const PLAN=[['2026-10-15',['li',12,8,3,22,10,11,21]],['2026-10-16',[26,16,13,14,23,25,1]],['2026-10-17',[15,24,6,20,4,9,19]]];
 function renderCal(){
  const el=document.getElementById('cal'); if(!el)return;
  el.innerHTML=PLAN.map(([d,items],k)=>{
   const dt=new Date(d+'T12:00:00');
   const wd=dt.toLocaleDateString('ar-SA-u-ca-gregory-nu-latn',{weekday:'long'});
   const dm=dt.toLocaleDateString('ar-SA-u-ca-gregory-nu-latn',{day:'numeric',month:'long'});
-  const clipsOnly=items.filter(x=>x!=='li'); const times=['4:00 م','9:00 م'];
+  items=items.filter(x=>x==='li'||!out(x)); const clipsOnly=items.filter(x=>x!=='li'); const times=['12:00 م','2:00 م','4:00 م','6:00 م','8:00 م','9:00 م','10:00 م'];
   const rows=items.map(x=>{
    if(x==='li')return `<div class="slot"><div class="li-ic">in</div><div><b>منشور لينكدإن: المقطع المجمّع</b><span>10:00 ص · لينكدإن</span></div></div>`;
    const c=clips.find(c=>c.i===x); const t=times[clipsOnly.indexOf(x)];
    return `<div class="slot"><img src="c/${x}.jpg?${REV}" alt="" loading="lazy"><div><b>${String(x).padStart(2,'0')}. ${esc(c.t.replace(/\n/g,' '))}</b><span>${t} · تيك توك وإنستقرام</span></div></div>`}).join('');
   return `<div class="day"><h4>${wd} ${dm}<small>اليوم ${k+1}</small></h4>${rows}</div>`}).join('');
 }
-function count(){let o=0,f=0,dn=0;for(const k in st){if(st[k].v==='ok')o++;if(st[k].v==='fix')f++;if(st[k].v==='done')dn++}
- document.getElementById('cnt').textContent=`${o} معتمد · ${f} تعديل`+(dn?` · ${dn} تم`:'')}
+function count(){let o=0,f=0,dn=0,no=0;for(const k in st){if(st[k].v==='ok')o++;if(st[k].v==='fix')f++;if(st[k].v==='done')dn++;if(st[k].v==='no')no++}
+ document.getElementById('cnt').textContent=`${o} معتمد · ${f} تعديل`+(no?` · ${no} غير معتمد`:'')+(dn?` · ${dn} تم`:'')}
 document.querySelectorAll('#plat button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('#plat button').forEach(x=>x.classList.toggle('on',x===b));plat=b.dataset.p;render()});
 document.getElementById('safeT').onchange=e=>document.getElementById('grid').classList.toggle('showsafe',e.target.checked);
 document.getElementById('wa').onclick=()=>{
- let ok=[],fx=[],dn=[];
+ let ok=[],fx=[],dn=[],no=[];
  clips.forEach(c=>{const s=st[c.i];if(!s)return;const t=c.t.replace(/\n/g,' ');
-  if(s.v==='done')dn.push(c.i);if(s.v==='ok')ok.push(c.i);if(s.v==='fix')fx.push(`${c.i}. ${t}: ${s.n||'بدون تفاصيل'}`)});
+  if(s.v==='done')dn.push(c.i);if(s.v==='no')no.push(c.i);if(s.v==='ok')ok.push(c.i);if(s.v==='fix')fx.push(`${c.i}. ${t}: ${s.n||'بدون تفاصيل'}`)});
  for(const id in EXTRA){const s=st[id];if(!s)continue;
   if(s.v==='ok')ok.push(EXTRA[id]);if(s.v==='fix')fx.push(`${EXTRA[id]}: ${s.n||'بدون تفاصيل'}`)}
- const rest=clips.length+3-ok.length-fx.length-dn.length;
+ const rest=clips.length+3-ok.length-fx.length-dn.length-no.length;
  let m=`رد التعميد · مقاطع معرض الصقور\n\nمعتمد (${ok.length}): ${ok.join('، ')||'لا يوجد'}\n`;
  if(fx.length)m+=`\nيحتاج تعديل (${fx.length}):\n${fx.join('\n')}\n`;
+ if(no.length)m+=`\nغير معتمد (${no.length}): ${no.join('، ')}\n`;
  if(dn.length)m+=`\nتم تعديلها بانتظار الاعتماد (${dn.length}): ${dn.join('، ')}\n`;
  if(rest)m+=`\nبدون رد: ${rest}\n`;
  window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank');
