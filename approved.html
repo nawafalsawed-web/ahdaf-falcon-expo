@@ -32,6 +32,14 @@ button{font:inherit;font-size:14px;border:1px solid var(--line);background:#fff;
 .st{display:flex;gap:10px;flex-wrap:wrap}
 .st span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 14px;font-size:15px}
 .st span.y{border-color:var(--ok);color:var(--ok)}
+.act{display:flex;gap:6px;margin-top:8px}.act button{flex:1;margin:0}
+.act .fin.on{background:var(--p);border-color:var(--p);color:#fff}
+.card.final{border-color:var(--p);box-shadow:0 0 0 2px var(--p) inset}
+.card.final small{color:var(--p);font-weight:700}
+.ed{display:none;margin-top:8px}.ed.open{display:block}
+.ed textarea{font:inherit;font-size:14px;width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:60px;resize:vertical}
+.ed button{width:100%;background:#b5651d;border-color:#b5651d;color:#fff}
+.me{font:inherit;font-size:15px;border:1px solid var(--line);border-radius:8px;padding:6px 12px;margin-bottom:14px;width:220px;max-width:100%}
 footer{color:var(--mut);text-align:center;padding:48px 0}
 @media(max-width:640px){.wrap{padding:0 16px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{padding:8px}.li{grid-template-columns:1fr}h2{font-size:24px}}
 </style>
@@ -46,6 +54,7 @@ footer{color:var(--mut);text-align:center;padding:48px 0}
  <h2>الحالة العامة</h2>
  <div class="st" id="st"></div>
  <h2>مقاطع تيك توك وإنستقرام</h2>
+ <input class="me" id="me" placeholder="اسمك (يظهر مع الاعتماد)" maxlength="40">
  <div class="grid" id="grid"></div>
  <div id="liBox"></div>
 </main>
@@ -60,26 +69,44 @@ const LI_CAP=`تغطيتنا لمعرض الصقور 26 لقاءً ميداني�
 في هذا المقطع دقيقة من أبرز اللحظات.`;
 const TAGS='#معرض_الصقور #أهداف';
 const esc=t=>t.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-let clips=[],last='';
+let clips=[],last='',st={};
+const DOC=i=>`projects/ahdaf-influencers/databases/(default)/documents/falcon_approvals/${i}`;
+const meEl=document.getElementById('me');
+try{meEl.value=localStorage.getItem('ahdaf-falcon-me')||''}catch(e){}
+meEl.oninput=()=>{try{localStorage.setItem('ahdaf-falcon-me',meEl.value)}catch(e){}};
+// same write as the main approval page; status 'final' = final sign-off, 'fix' sends it back for edits
+function put(i,v,n){
+ return fetch(DB.split('/falcon_approvals')[0]+':commit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({writes:[{
+  update:{name:DOC(i),fields:{v:{stringValue:v},n:{stringValue:(n||'').slice(0,1000)},by:{stringValue:meEl.value.trim().slice(0,40)}}},
+  updateTransforms:[{fieldPath:'ts',setToServerValue:'REQUEST_TIME'}]}]})}).then(r=>{if(!r.ok)throw 0;last='';load()}).catch(()=>alert('ما انحفظ، جرّب مرة ثانية'));
+}
 function copy(b,t){navigator.clipboard.writeText(t).then(()=>{b.textContent='✓ انتسخ';setTimeout(()=>b.textContent='نسخ الكابشن',1500)})}
 async function load(){
- let st={};
- try{(((await (await fetch(DB)).json()).documents)||[]).forEach(x=>st[x.name.split('/').pop()]=x.fields.v?.stringValue||'')}catch(e){return}
- const j=JSON.stringify(st); if(j===last)return;
+ const s0={};
+ try{(((await (await fetch(DB)).json()).documents)||[]).forEach(x=>s0[x.name.split('/').pop()]=x.fields.v?.stringValue||'')}catch(e){return}
+ const j=JSON.stringify(s0); if(j===last)return;
  if([...document.querySelectorAll('video')].some(v=>!v.paused))return; // don't interrupt playback
+ if(document.activeElement&&document.activeElement.tagName==='TEXTAREA')return; // don't wipe a note being typed
+ st=s0;
  last=j;
- const ok=clips.filter(c=>st[c.i]==='ok');
- document.getElementById('sum').textContent=`${ok.length} من ${clips.length} مقطع معتمد`;
+ const ok=clips.filter(c=>st[c.i]==='ok'||st[c.i]==='final'), fin=ok.filter(c=>st[c.i]==='final').length;
+ document.getElementById('sum').textContent=`${ok.length} من ${clips.length} مقطع معتمد · ${fin} تعميد نهائي`;
  document.getElementById('st').innerHTML=[['highlight','منشور لينكدإن'],['calendar','جدول النشر'],['iggrid','شبكة إنستقرام']]
   .map(([k,l])=>`<span class="${st[k]==='ok'?'y':''}">${l}: ${st[k]==='ok'?'✓ معتمد':'لسا'}</span>`).join('');
  const g=document.getElementById('grid');
  g.innerHTML=ok.length?'':'<div class="empty">ما فيه مقاطع معتمدة للحين</div>';
  ok.forEach(c=>{
-  const cap=c.t+'\n'+TAGS, el=document.createElement('div'); el.className='card';
+  const cap=c.t+'\n'+TAGS, f=st[c.i]==='final', el=document.createElement('div'); el.className='card'+(f?' final':'');
   el.innerHTML=`<video src="v/${c.i}.mp4?${REV}" poster="c/${c.i}.jpg?${REV}" controls playsinline preload="none"></video>
-   <b>${String(c.i).padStart(2,'0')}. ${esc(c.t.replace(/\n/g,' '))}</b><small>✓ معتمد</small>
-   <div class="cap">${esc(cap)}</div><button>نسخ الكابشن</button>`;
-  el.querySelector('button').onclick=e=>copy(e.target,cap);
+   <b>${String(c.i).padStart(2,'0')}. ${esc(c.t.replace(/\n/g,' '))}</b><small>${f?'✓ تعميد نهائي':'✓ معتمد'}</small>
+   <div class="cap">${esc(cap)}</div><button class="cp">نسخ الكابشن</button>
+   <div class="act"><button class="fin ${f?'on':''}">${f?'✓ تعميد نهائي':'تعميد نهائي'}</button><button class="fx">تعديل</button></div>
+   <div class="ed"><textarea placeholder="وش التعديل المطلوب؟"></textarea><button>إرسال التعديل</button></div>`;
+  el.querySelector('.cp').onclick=e=>copy(e.target,cap);
+  el.querySelector('.fin').onclick=()=>put(c.i,f?'ok':'final');
+  const ed=el.querySelector('.ed');
+  el.querySelector('.fx').onclick=()=>{ed.classList.toggle('open');ed.querySelector('textarea').focus()};
+  ed.querySelector('button').onclick=()=>{const n=ed.querySelector('textarea').value.trim();if(n)put(c.i,'fix',n);else ed.querySelector('textarea').focus()};
   g.appendChild(el);
  });
  const li=document.getElementById('liBox');

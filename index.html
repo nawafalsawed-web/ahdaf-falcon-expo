@@ -278,7 +278,7 @@ function render(){
  document.querySelectorAll('#filt button').forEach(b=>b.onclick=()=>{filt=b.dataset.f;render()});
  clips.forEach(c=>{
   const s=st[c.i]||{}; const v=s.v||'';
-  if(filt==='cut'?!CUT[c.i]:filt==='none'?(v&&v!=='done'):filt!=='all'&&v!==filt)return;
+  if(filt==='cut'?!CUT[c.i]:filt==='none'?(v&&v!=='done'):filt==='ok'?(v!=='ok'&&v!=='final'):filt!=='all'&&v!==filt)return;
   const el=document.createElement('div');
   el.className='card'+(v==='fix'?' needfix':'')+(v==='no'?' rejected':'')+(CUT[c.i]?' cut':'');
   el.innerHTML=`<div class="phone"><img class="poster" src="c/${c.i}.jpg?${REV}" loading="lazy" alt="">${ui(c)}${safeBox()}
@@ -298,8 +298,8 @@ function render(){
  });
  renderExtra(); renderCal(); count();
 }
-function apprHTML(id,s){return `<div class="act"><button class="ok ${s.v==='ok'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button><button class="no ${s.v==='no'?'on':''}">غير معتمد</button></div>
-   <div class="who">${s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):s.v==='no'?'✕ غير معتمد، ما ينزل'+(s.by?' ('+esc(s.by)+')':''):s.v==='done'?'<span class="done-tag">✓ تم التعديل</span> لو فيه تعديل ثاني اضغط «يحتاج تعديل»':''}</div>
+function apprHTML(id,s){return `<div class="act"><button class="ok ${s.v==='ok'||s.v==='final'?'on':''}">معتمد</button><button class="fix ${s.v==='fix'?'on':''}">يحتاج تعديل</button><button class="no ${s.v==='no'?'on':''}">غير معتمد</button></div>
+   <div class="who">${s.v==='final'?'✓ تعميد نهائي'+(s.by?' من '+esc(s.by):''):s.v==='ok'?'✓ معتمد'+(s.by?' من '+esc(s.by):''):s.v==='fix'?'تعديل'+(s.by?' من '+esc(s.by):''):s.v==='no'?'✕ غير معتمد، ما ينزل'+(s.by?' ('+esc(s.by)+')':''):s.v==='done'?'<span class="done-tag">✓ تم التعديل</span> لو فيه تعديل ثاني اضغط «يحتاج تعديل»':''}</div>
    ${(s.v==='done'||s.v==='no')&&s.n?`<div class="req">الطلب: ${esc(s.n)}</div>`:''}
    <textarea placeholder="وش التعديل المطلوب؟">${esc(s.n||'')}</textarea>`}
 function bind(el,id,s,re){
@@ -332,7 +332,7 @@ function renderCal(){
    return `<div class="slot"><img src="c/${x}.jpg?${REV}" alt="" loading="lazy"><div><b>${String(x).padStart(2,'0')}. ${esc(c.t.replace(/\n/g,' '))}</b><span>${t} · تيك توك وإنستقرام</span></div></div>`}).join('');
   return `<div class="day"><h4>${wd} ${dm}<small>اليوم ${k+1}</small></h4>${rows}</div>`}).join('');
 }
-function count(){let o=0,f=0,dn=0,no=0;for(const k in st){if(st[k].v==='ok')o++;if(st[k].v==='fix')f++;if(st[k].v==='done')dn++;if(st[k].v==='no')no++}
+function count(){let o=0,f=0,dn=0,no=0;for(const k in st){if(st[k].v==='ok'||st[k].v==='final')o++;if(st[k].v==='fix')f++;if(st[k].v==='done')dn++;if(st[k].v==='no')no++}
  document.getElementById('cnt').textContent=`${o} معتمد · ${f} تعديل`+(no?` · ${no} غير معتمد`:'')+(dn?` · ${dn} تم`:'')}
 document.querySelectorAll('#plat button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('#plat button').forEach(x=>x.classList.toggle('on',x===b));plat=b.dataset.p;render()});
@@ -340,7 +340,7 @@ document.getElementById('safeT').onchange=e=>document.getElementById('grid').cla
 document.getElementById('wa').onclick=()=>{
  let ok=[],fx=[],dn=[],no=[];
  clips.forEach(c=>{const s=st[c.i];if(!s)return;const t=c.t.replace(/\n/g,' ');
-  if(s.v==='done')dn.push(c.i);if(s.v==='no')no.push(c.i);if(s.v==='ok')ok.push(c.i);if(s.v==='fix')fx.push(`${c.i}. ${t}: ${s.n||'بدون تفاصيل'}`)});
+  if(s.v==='done')dn.push(c.i);if(s.v==='no')no.push(c.i);if(s.v==='ok')ok.push(c.i);if(s.v==='final')ok.push(c.i+' (نهائي)');if(s.v==='fix')fx.push(`${c.i}. ${t}: ${s.n||'بدون تفاصيل'}`)});
  for(const id in EXTRA){const s=st[id];if(!s)continue;
   if(s.v==='ok')ok.push(EXTRA[id]);if(s.v==='fix')fx.push(`${EXTRA[id]}: ${s.n||'بدون تفاصيل'}`)}
  const rest=clips.length+3-ok.length-fx.length-dn.length-no.length;
